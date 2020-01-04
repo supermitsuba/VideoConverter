@@ -27,3 +27,4 @@ find "${source}" -type f -name "${extension}" -not -path "*/.*/*" -not -path "*/
 	echo ""
 done
 
+exit 0
