@@ -6,7 +6,7 @@ extension="*.ts"
 echo "Processing this directory: $source "
 
 # Get a list of all files to convert
-find "${source}" -type f -name "${extension}" -not -path "*/.*/*" -not -path "*/Meet the Press*/*" -not -path "*/Flashpoint*/*" | while read sourceFile; do
+find "${source}" -type f -name "${extension}" -not -path "*/.*/*" -not -path "*/Meet the Press*/*" -not -path "*/FlashPoint*/*" | while read sourceFile; do
 
   	echo "Starting with this file: $sourceFile"
 	
