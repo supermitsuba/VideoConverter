@@ -17,22 +17,25 @@ find "${source}" -type f -name "${extension}" -not -path "*/.*/*" -not -path "*/
     DATE_WITH_TIME=`date "+%Y%m%d-%H%M%S"`
   	echo "${DATE_WITH_TIME}: Starting with this file: $sourceFile" >> "${logFile}"
 	
-	# Get the destination file
-	destFile="${sourceFile%.ts}.mp4"
-	echo "Converting file to: $destFile" >> "${logFile}"
-
-        # get the file name only
+    # get the file name only
 	sourceFileName=$(echo "${sourceFile}" | sed "s/.*\///")
 	echo "The file name is: $sourceFileName"  >> "${logFile}"
+
+	# Get the destination file
+	destFileName="${sourceFileName%.ts}.mp4"
+	destFile="${destination}/${destFileName}"
+	echo "Converting file to: $destFile" >> "${logFile}"   
 
 	# Convert ts file to mp4
 	ffmpeg -nostdin -i "${sourceFile}" -c:v libx264 -c:a aac "${destFile}"
 
 	# Move ts file to temp folder
-	mv "${sourceFile}" "${destination}/${sourceFileName}"
+	# mv "${sourceFile}" "${destination}/${sourceFileName}"
+	# Remove the ts file after converting it
+	rm "${sourceFile}"
 
     DATE_WITH_TIME=`date "+%Y%m%d-%H%M%S"`
-	echo "${DATE_WITH_TIME}: Moved file ${destination}/${sourceFileName}"  >> "${logFile}"
+	echo "${DATE_WITH_TIME}: Deleted file ${sourceFile}"  >> "${logFile}"
 	
 	echo ""
 done
