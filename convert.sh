@@ -1,7 +1,7 @@
 #!/bin/bash
 source="/mnt/source"
-destination="/mnt/destination"
-logFile="${destination}/log.txt"
+log="/mnt/log"
+logFile="${log}/log.txt"
 extension="*.ts"
 
 echo "Processing this directory: $source "
