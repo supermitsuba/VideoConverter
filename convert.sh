@@ -1,5 +1,6 @@
 #!/bin/bash
 source="/mnt/source"
+temp="/mnt/temp"
 log="/mnt/log"
 logFile="${log}/log.txt"
 extension="*.ts"
@@ -18,14 +19,21 @@ find "${source}" -type f -name "${extension}" -not -path "*/.*/*" -not -path "*/
   	echo "${DATE_WITH_TIME}: Starting with this file: $sourceFile" >> "${logFile}"
 	
 	# Get the destination file
-	destFile="${sourceFile%.ts}.mp4"
+	filename=$(basename -- "$sourceFile")
+	destFile="${filename%.ts}.mp4"
 	echo "Converting file to: $destFile" >> "${logFile}"
 
+	tempPath="${temp}/${destFile}"
+	destPath="${sourceFile%.ts}.mp4"
+	echo "tempPath: ${tempPath}"
+	echo "destPath: ${destPath}"
+
 	# Convert ts file to mp4
-	ffmpeg -nostdin -i "${sourceFile}" -c:v libx264 -c:a aac "${destFile}"
+	ffmpeg -nostdin -i "${sourceFile}" -c:v libx264 -c:a aac "${tempPath}"
 
 	# Move ts file to temp folder
 	rm "${sourceFile}"
+	mv "$tempPath" "$destPath"
 
     DATE_WITH_TIME=`date "+%Y%m%d-%H%M%S"`
 	echo "${DATE_WITH_TIME}: Deleted file ${sourceFile}"  >> "${logFile}"
