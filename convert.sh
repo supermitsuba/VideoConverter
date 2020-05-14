@@ -1,10 +1,17 @@
 #!/bin/bash
+
+if [ -z "$1" ]
+then
+	echo "Enter an extension to convert videos, like 'ts' or 'mkv'!"
+	exit 0
+fi
+
 source="/mnt/source"
-temp="/mnt/temp"
 log="/mnt/log"
 logFile="${log}/log.txt"
-extension="*.ts"
+extension="*.${1}"
 
+echo "Processing extension: $extension "
 echo "Processing this directory: $source "
 
 # Get a list of all files to convert
@@ -19,21 +26,14 @@ find "${source}" -type f -name "${extension}" -not -path "*/.*/*" -not -path "*/
   	echo "${DATE_WITH_TIME}: Starting with this file: $sourceFile" >> "${logFile}"
 	
 	# Get the destination file
-	filename=$(basename -- "$sourceFile")
-	destFile="${filename%.ts}.mp4"
+	destFile="${sourceFile%.*}.mp4"
 	echo "Converting file to: $destFile" >> "${logFile}"
 
-	tempPath="${temp}/${destFile}"
-	destPath="${sourceFile%.ts}.mp4"
-	echo "tempPath: ${tempPath}"
-	echo "destPath: ${destPath}"
-
 	# Convert ts file to mp4
-	ffmpeg -nostdin -i "${sourceFile}" -c:v libx264 -c:a aac "${tempPath}"
+	ffmpeg -nostdin -i "${sourceFile}" -c:v libx264 -c:a aac "${destFile}"
 
 	# Move ts file to temp folder
 	rm "${sourceFile}"
-	mv "$tempPath" "$destPath"
 
     DATE_WITH_TIME=`date "+%Y%m%d-%H%M%S"`
 	echo "${DATE_WITH_TIME}: Deleted file ${sourceFile}"  >> "${logFile}"
