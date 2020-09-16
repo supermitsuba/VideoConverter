@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z "$1" ]
+if [ -z "$VIDEO_EXT" ]
 then
 	echo "Enter an extension to convert videos, like 'ts' or 'mkv'!"
 	exit 0
@@ -9,9 +9,9 @@ fi
 source="/mnt/source"
 log="/mnt/log"
 logFile="${log}/log.txt"
-extension="*.${1}"
-numberOfFiles="${2}"
-useh265="${3}"
+extension="*.${VIDEO_EXT}"
+numberOfFiles="${NUM_FILES}"
+useh265="${USEH265}"
 
 echo "Processing extension: $extension "
 echo "Processing this directory: $source "
