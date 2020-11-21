@@ -12,18 +12,22 @@ logFile="${log}/log.txt"
 extension="*.${VIDEO_EXT}"
 numberOfFiles="${NUM_FILES}"
 useh265="${USEH265}"
+excludePath="${EXCLUDEPATH}"
 
 echo "Processing extension: $extension "
 echo "Processing this directory: $source "
 echo "Using h265: ${useh265}"
+echo "Using excludePath: ${excludePath}"
 
 # Get a list of all files to convert
 DATE_WITH_TIME=`date "+%Y%m%d-%H%M%S"`
 Files=$()
 echo "${DATE_WITH_TIME}: Here are the files to loop" >> "${logFile}"
-find "${source}" -type f -name "${extension}" -not -path "*/.*/*" -not -path "*/Meet the Press*/*" -not -path "*/FlashPoint*/*" | head -n $numberOfFiles >> "${logFile}"
 
-find "${source}" -type f -name "${extension}" -not -path "*/.*/*" -not -path "*/Meet the Press*/*" -not -path "*/FlashPoint*/*" | head -n $numberOfFiles | while read sourceFile; do
+findPath="find \"${source}\" -type f -name \"${extension}\" ${excludePath} | head -n $numberOfFiles"
+
+eval $findPath >> "${logFile}"
+eval $findPath | while read sourceFile; do
     
     DATE_WITH_TIME=`date "+%Y%m%d-%H%M%S"`
 	
