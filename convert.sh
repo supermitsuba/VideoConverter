@@ -35,6 +35,8 @@ eval $findPath | while read sourceFile; do
 	destFile="${sourceFile%.*}.mp4"
 	tempFile="${sourceFile%.*}.temp.mp4"
 
+	rm -r "$tempFile"
+
 	# Convert ts file to mp4
 	if [ "$useh265" = "true" ]; then
   		echo "${DATE_WITH_TIME}: Starting with this file as h265: $sourceFile to $destFile" >> "${logFile}"
